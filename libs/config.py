@@ -29,8 +29,4 @@ class AppConfig:
 	GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 	GOOGLE_APPLICATION_CREDENTIALS = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
-	# AWS
-	AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
-	AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
-
 config = AppConfig()

@@ -10,16 +10,13 @@ class AwsRekognition:
     def __init__(self):
         self.name = 'AWS-Rekognition'
 
-        self.api_key = config.AWS_API_KEY
-        
         self.min_confidence = 7
         self.max_labels = 30
 
-        AWS_Rek_CREDS = {
-            "aws_access_key_id" : config.AWS_ACCESS_KEY,
-            "aws_secret_access_key" : config.AWS_SECRET_KEY
-        }
-        self.client = boto3.client('rekognition', **AWS_Rek_CREDS)
+        self.aws_access_key_id = config.AWS_ACCESS_KEY
+        self.aws_secret_access_key = config.AWS_SECRET_KEY
+        
+        self.client = boto3.client('rekognition')
 
     def predict(self, image_id_list : list):
         total = len(image_id_list)
@@ -34,12 +31,13 @@ class AwsRekognition:
             image_path = f'{config.BASE_FOLDER}{id}'
             
             with open(image_path, "rb") as image_file:
-                encoded_image = base64.b64encode(image_file.read())
+                base64_image=base64.b64encode(image_file.read())
+                base_64_binary = base64.decodebytes(base64_image)
 
             try:
                 response = self.client.detect_labels(
                     Image={
-                        'Bytes': encoded_image
+                        'Bytes': base_64_binary
                     },
                     MaxLabels= self.max_labels,
                     MinConfidence= self.min_confidence,
